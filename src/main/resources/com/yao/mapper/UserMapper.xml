@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yao.dao.UserDao">
+	<!-- 根据ID查询用户信息 -->
+	<select id="findUser" parameterType="int" resultMap="UserResultMap">
+		select u.id ,u.name ,u.age,re.id user_right_id, r.id rightid,r.operight from User u
+		LEFT JOIN relation_user_right re on u.id=re.userid
+		LEFT JOIN right1 r on re.rightid=r.id
+		<where>
+			<if test="_parameter > 0 ">
+				u.id = #{id}
+			</if>
+		</where>
+	</select>
+	<!-- 查询所有用户信息 -->
+	<select id="userList" resultMap="UserResultMap">
+		select u.id ,u.name ,u.age,re.id user_right_id, r.id rightid,r.operight from User u
+		LEFT JOIN relation_user_right re on u.id=re.userid
+		LEFT JOIN right1 r on re.rightid=r.id
+	</select>
+	<!-- 自定义的resultMap结果集 -->
+	<resultMap type="com.yao.model.User" id="UserResultMap">
+		<result column="id" jdbcType="VARCHAR" property="id" javaType="java.lang.Integer" />
+		<result column="name" jdbcType="VARCHAR" property="name" javaType="java.lang.String" />
+		<result column="age" jdbcType="VARCHAR" property="age" javaType="java.lang.Integer" />
+		<collection property="rights" ofType="com.yao.model.Right">
+			<id property="id" column="rightid" />
+			<result property="operight" column="operight" />
+		</collection>  
+	</resultMap>
+	<!-- 新增用户 -->
+	<insert id="addUser" parameterType="com.yao.model.User">
+		INSERT INTO relation_user_right (userid,rightid) values 
+		<foreach collection="#{user.rights}"  item="tag">
+			(#{user.id},#{tag.id})
+		</foreach>
+	</insert>
+	<!-- 查询权限表中信息 -->
+	<select id="rightlist" resultType="com.yao.model.Right">
+	select * from right1
+	</select>
+</mapper>

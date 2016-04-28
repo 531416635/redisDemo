@@ -1,0 +1,6 @@
+<decorators defaultdir="/WEB-INF/pages/">
+	<decorator name="header" page="header.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators> 
+
