@@ -30,7 +30,7 @@ public class UserController {
 	public String findUser(Model model) {
 
 		Jedis connredis = rediservice.getRedisConn();
-		System.out.println(connredis.get("key1"));
+		System.out.println(connredis.keys("*"));
 		User user = userservice.findUser(1);
 		model.addAttribute("user", user);
 		return "userfind";

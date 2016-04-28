@@ -11,8 +11,7 @@ import redis.clients.jedis.Jedis;
 @Service("rediservice")
 public class RediServiceImpl implements RediService{
 
-	private static final Logger log = LoggerFactory
-			.getLogger(RediServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(RediServiceImpl.class);
 
 	public Jedis getRedisConn() {
 		// 连接本地的 Redis 服务
